@@ -6,8 +6,8 @@ package com.cervezoteca.anjov.domain.model;
 
 public class Brewery {
 
-    private String name;
     private String id;
+    private String name;
     private String image;
     private String country;
     private String slug;

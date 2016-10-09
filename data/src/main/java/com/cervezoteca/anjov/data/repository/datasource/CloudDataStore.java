@@ -1,6 +1,7 @@
 package com.cervezoteca.anjov.data.repository.datasource;
 
 import com.cervezoteca.anjov.domain.model.Brewery;
+import com.cervezoteca.anjov.domain.model.TapBeer;
 
 import java.util.List;
 
@@ -45,6 +46,9 @@ public class CloudDataStore implements BreweryDataStore {
         @GET("/api/breweries/")
         Call<List<Brewery>> getBreweries();
 
+        @GET("/api/tap/")
+        Call<List<TapBeer>> getTapBeer();
+
     }
 
     public Observable<List<Brewery>> getBreweries() {
@@ -61,6 +65,28 @@ public class CloudDataStore implements BreweryDataStore {
                     }
                     else
                         subscriber.onError(new Exception(getBreweriesResponse.errorBody().string()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    subscriber.onError(new Exception(e.getMessage()));
+                }
+            }
+        });
+    }
+
+    public Observable<List<TapBeer>> getTapBeers() {
+
+        return Observable.create(new Observable.OnSubscribe<List<TapBeer>>() {
+            @Override
+            public void call(Subscriber<? super List<TapBeer>> subscriber) {
+                try {
+                    Call<List<TapBeer>> getTapBeers = breweryApiService.getTapBeer();
+                    Response<List<TapBeer>> getTapBeersResponse = getTapBeers.execute();
+                    if(getTapBeersResponse.code()==200) {
+                        subscriber.onNext(getTapBeersResponse.body());
+                        subscriber.onCompleted();
+                    }
+                    else
+                        subscriber.onError(new Exception(getTapBeersResponse.errorBody().string()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     subscriber.onError(new Exception(e.getMessage()));

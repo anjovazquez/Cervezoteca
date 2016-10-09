@@ -3,6 +3,7 @@ package com.cervezoteca.anjov.data.repository;
 import com.cervezoteca.anjov.data.repository.datasource.BreweryDataStore;
 import com.cervezoteca.anjov.data.repository.datasource.BreweryDataStoreFactory;
 import com.cervezoteca.anjov.domain.model.Brewery;
+import com.cervezoteca.anjov.domain.model.TapBeer;
 import com.cervezoteca.anjov.domain.repository.BreweryRepository;
 
 import java.util.List;
@@ -28,5 +29,11 @@ public class BreweryDataRepository implements BreweryRepository {
     public Observable<List<Brewery>> getBreweries() {
         final BreweryDataStore breweryDataStore = this.breweryDataStoreFactory.createCloudDataStore();
         return breweryDataStore.getBreweries();
+    }
+
+    @Override
+    public Observable<List<TapBeer>> getTapBeers() {
+        final BreweryDataStore breweryDataStore = this.breweryDataStoreFactory.createCloudDataStore();
+        return breweryDataStore.getTapBeers();
     }
 }
