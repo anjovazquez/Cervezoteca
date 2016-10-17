@@ -5,17 +5,19 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
         app:srcCompat="@android:drawable/ic_menu_camera"
         android:id="@+id/breweryImage"
-        android:layout_weight="0.2"/>
+        android:layout_marginLeft="10dp"/>
+
     <TextView
         android:text=""
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/breweryName"
-        android:textStyle="normal|bold"
+        android:layout_gravity="center"
+        android:textStyle="bold|normal"
         android:textSize="18sp"
-        android:layout_weight="0.8" />
+        android:padding="10dp"/>
 </LinearLayout>

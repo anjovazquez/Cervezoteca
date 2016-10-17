@@ -62,7 +62,13 @@ public class BreweriesListAdapter extends RecyclerView.Adapter<BreweriesListAdap
     public void onBindViewHolder(BreweriesListAdapter.BreweryViewHolder holder, int position) {
         final Brewery brewery = ((List<Brewery>)this.mDataset).get(position);
         holder.breweryName.setText(brewery.getName());
-        Picasso.with(context).load(brewery.getImage()).into(holder.breweryImage);
+        if(brewery.getImage()!=null){
+            Picasso.with(context).load(brewery.getImage()).into(holder.breweryImage);
+        }
+        else{
+            Picasso.with(context).load(R.drawable.beer_brand).into(holder.breweryImage);
+        }
+
     }
 
     @Override

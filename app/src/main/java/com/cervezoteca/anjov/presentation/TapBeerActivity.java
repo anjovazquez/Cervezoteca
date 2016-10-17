@@ -12,9 +12,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import com.cervezoteca.anjov.domain.model.TapBeer;
 import com.cervezoteca.anjov.presentation.adapter.BeerListAdapter;
+import com.cervezoteca.anjov.presentation.di.HasComponent;
 import com.cervezoteca.anjov.presentation.di.component.ApplicationComponent;
 import com.cervezoteca.anjov.presentation.di.component.DaggerTapBeersComponent;
 import com.cervezoteca.anjov.presentation.di.component.TapBeersComponent;
@@ -22,6 +24,8 @@ import com.cervezoteca.anjov.presentation.di.module.ActivityModule;
 import com.cervezoteca.anjov.presentation.di.module.TapBeersModule;
 import com.cervezoteca.anjov.presentation.presenter.TapBeerPresenter;
 import com.cervezoteca.anjov.presentation.view.TapBeersView;
+import com.cervezoteca.anjov.presentation.view.fragment.BreweriesFragment;
+import com.cervezoteca.anjov.presentation.view.fragment.TapBeerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,22 +35,16 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class TapBeerActivity extends AppCompatActivity implements TapBeersView {
+public class TapBeerActivity extends AppCompatActivity implements HasComponent<TapBeersComponent> {
 
     private TapBeersComponent tapBeersComponent;
-
-    @Inject
-    TapBeerPresenter tapBeerPresenter;
 
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
-    @BindView(R.id.beerList)
-    RecyclerView rBeerList;
-
-    BeerListAdapter beerListAdapter;
+    @BindView(R.id.fragment_container)
+    FrameLayout fragmentContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,19 +57,18 @@ public class TapBeerActivity extends AppCompatActivity implements TapBeersView {
         ab.setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         //if (navigationView != null) {
-            setupDrawerContent(navigationView);
-            installMenuListeners(navigationView);
+        setupDrawerContent(navigationView);
+        installMenuListeners(navigationView);
         //}
 
-        rBeerList.setHasFixedSize(true);
-        rBeerList.setLayoutManager(new LinearLayoutManager(this));
-        beerListAdapter = new BeerListAdapter(this, new ArrayList<TapBeer>());
-        rBeerList.setAdapter(beerListAdapter);
 
         this.initializeInjector();
         tapBeersComponent.inject(this);
-        tapBeerPresenter.setView(this);
-        tapBeerPresenter.listTapBeers();
+
+        TapBeerFragment f = TapBeerFragment.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, f).commit();
+
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -91,7 +88,9 @@ public class TapBeerActivity extends AppCompatActivity implements TapBeersView {
         navBeers.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-
+                TapBeerFragment f = TapBeerFragment.newInstance();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, f).commit();
                 return false;
             }
 
@@ -101,7 +100,9 @@ public class TapBeerActivity extends AppCompatActivity implements TapBeersView {
         navBreweries.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-
+                BreweriesFragment f = BreweriesFragment.newInstance();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, f).commit();
                 return false;
             }
         });
@@ -119,7 +120,7 @@ public class TapBeerActivity extends AppCompatActivity implements TapBeersView {
     }
 
     protected ApplicationComponent getApplicationComponent() {
-        return ((CervezotecaApp)getApplication()).getApplicationComponent();
+        return ((CervezotecaApp) getApplication()).getApplicationComponent();
     }
 
     protected ActivityModule getActivityModule() {
@@ -135,40 +136,7 @@ public class TapBeerActivity extends AppCompatActivity implements TapBeersView {
     }
 
     @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void showRetry() {
-
-    }
-
-    @Override
-    public void hideRetry() {
-
-    }
-
-    @Override
-    public void showError(String message) {
-
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
-    public void renderTapBeers(List<TapBeer> beerList) {
-        if (beerList != null) {
-            this.beerListAdapter.setBeerListCollection(beerList);
-            rBeerList.setAdapter(beerListAdapter);
-        }
+    public TapBeersComponent getComponent() {
+        return tapBeersComponent;
     }
 }

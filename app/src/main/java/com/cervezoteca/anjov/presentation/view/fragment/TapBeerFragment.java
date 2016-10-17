@@ -4,54 +4,45 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import com.cervezoteca.anjov.data.R;
+import com.cervezoteca.anjov.domain.model.TapBeer;
+import com.cervezoteca.anjov.presentation.R;
+import com.cervezoteca.anjov.presentation.adapter.BeerListAdapter;
+import com.cervezoteca.anjov.presentation.di.HasComponent;
+import com.cervezoteca.anjov.presentation.di.component.TapBeersComponent;
+import com.cervezoteca.anjov.presentation.presenter.TapBeerPresenter;
+import com.cervezoteca.anjov.presentation.view.TapBeersView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TapBeerFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TapBeerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TapBeerFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import javax.inject.Inject;
 
-    private OnFragmentInteractionListener mListener;
+public class TapBeerFragment extends Fragment implements TapBeersView {
+
+    @Inject
+    TapBeerPresenter tapBeerPresenter;
+
+    @BindView(com.cervezoteca.anjov.presentation.R.id.beerList)
+    RecyclerView rBeerList;
+
+    BeerListAdapter beerListAdapter;
 
     public TapBeerFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TapBeerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TapBeerFragment newInstance(String param1, String param2) {
+    public static TapBeerFragment newInstance() {
         TapBeerFragment fragment = new TapBeerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -59,9 +50,12 @@ public class TapBeerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
+    }
+
+    protected <C> C getComponent(Class<C> componentType) {
+        return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
     }
 
     @Override
@@ -69,34 +63,68 @@ public class TapBeerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tap_beers_fragment, container, false);
         ButterKnife.bind(this, view);
-        return view;
-    }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        this.getComponent(TapBeersComponent.class).inject(this);
+
+        rBeerList.setHasFixedSize(true);
+        rBeerList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        beerListAdapter = new BeerListAdapter(getActivity(), new ArrayList<TapBeer>());
+        rBeerList.setAdapter(beerListAdapter);
+
+
+        tapBeerPresenter.setView(this);
+        tapBeerPresenter.listTapBeers();
+
+        return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
+
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showRetry() {
+
+    }
+
+    @Override
+    public void hideRetry() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity();
+    }
+
+    @Override
+    public void renderTapBeers(List<TapBeer> beerList) {
+        if (beerList != null) {
+            this.beerListAdapter.setBeerListCollection(beerList);
+            rBeerList.setAdapter(beerListAdapter);
+        }
     }
 }

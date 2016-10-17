@@ -27,4 +27,13 @@ public class TapBeersModule {
                                 PostExecutionThread postExecutionThread) {
         return new GetTapBeers(breweryRepository, threadExecutor, postExecutionThread);
     }
+
+    @Provides
+    @PerActivity
+    @Named("getBreweries")
+    UseCase provideGetBreweries(BreweryRepository breweryRepository,
+                                ThreadExecutor threadExecutor,
+                                PostExecutionThread postExecutionThread) {
+        return new GetBreweries(breweryRepository, threadExecutor, postExecutionThread);
+    }
 }
