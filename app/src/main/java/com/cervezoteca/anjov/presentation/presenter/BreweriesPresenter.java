@@ -33,6 +33,7 @@ public class BreweriesPresenter implements Presenter {
     }
 
     public void listBreweries() {
+        showViewLoading();
         getBreweriesUseCase.execute(new GetBreweriesSubscriber());
     }
 

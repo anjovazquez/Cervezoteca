@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.cervezoteca.anjov.domain.model.Brewery;
 import com.cervezoteca.anjov.presentation.R;
@@ -33,6 +34,9 @@ public class BreweriesFragment extends Fragment implements BreweriesView {
 
     @BindView(R.id.breweryList)
     RecyclerView rBreweryList;
+
+    @BindView(R.id.loadingBreweriesBar)
+    ProgressBar loadingBar;
 
     BreweriesListAdapter breweriesListAdapter;
 
@@ -94,12 +98,12 @@ public class BreweriesFragment extends Fragment implements BreweriesView {
 
     @Override
     public void showLoading() {
-
+        loadingBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-
+        loadingBar.setVisibility(View.INVISIBLE);
     }
 
     @Override

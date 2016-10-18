@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -34,6 +35,9 @@ public class TapBeerFragment extends Fragment implements TapBeersView {
 
     @BindView(com.cervezoteca.anjov.presentation.R.id.beerList)
     RecyclerView rBeerList;
+
+    @BindView(R.id.loadingTapBeersBar)
+    ProgressBar loadingBar;
 
     BeerListAdapter beerListAdapter;
 
@@ -92,12 +96,12 @@ public class TapBeerFragment extends Fragment implements TapBeersView {
 
     @Override
     public void showLoading() {
-
+        loadingBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-
+        loadingBar.setVisibility(View.INVISIBLE);
     }
 
     @Override

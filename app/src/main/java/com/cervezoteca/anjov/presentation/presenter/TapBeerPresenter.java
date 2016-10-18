@@ -33,6 +33,7 @@ public class TapBeerPresenter implements Presenter {
     }
 
     public void listTapBeers() {
+        showViewLoading();
         getTapBeersUseCase.execute(new TapBeerPresenter.GetTapBeersSubscriber());
     }
 
