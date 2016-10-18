@@ -2,6 +2,7 @@ package com.cervezoteca.anjov.presentation.di.module;
 
 import com.cervezoteca.anjov.domain.executor.PostExecutionThread;
 import com.cervezoteca.anjov.domain.executor.ThreadExecutor;
+import com.cervezoteca.anjov.domain.interactor.GetBottleBeers;
 import com.cervezoteca.anjov.domain.interactor.GetBreweries;
 import com.cervezoteca.anjov.domain.interactor.GetTapBeers;
 import com.cervezoteca.anjov.domain.interactor.UseCase;
@@ -35,5 +36,14 @@ public class TapBeersModule {
                                 ThreadExecutor threadExecutor,
                                 PostExecutionThread postExecutionThread) {
         return new GetBreweries(breweryRepository, threadExecutor, postExecutionThread);
+    }
+
+    @Provides
+    @PerActivity
+    @Named("getBottleBeers")
+    UseCase provideGetBottleBeers(BreweryRepository breweryRepository,
+                                ThreadExecutor threadExecutor,
+                                PostExecutionThread postExecutionThread) {
+        return new GetBottleBeers(breweryRepository, threadExecutor, postExecutionThread);
     }
 }

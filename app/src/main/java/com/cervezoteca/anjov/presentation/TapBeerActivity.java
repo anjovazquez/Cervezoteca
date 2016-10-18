@@ -24,6 +24,7 @@ import com.cervezoteca.anjov.presentation.di.module.ActivityModule;
 import com.cervezoteca.anjov.presentation.di.module.TapBeersModule;
 import com.cervezoteca.anjov.presentation.presenter.TapBeerPresenter;
 import com.cervezoteca.anjov.presentation.view.TapBeersView;
+import com.cervezoteca.anjov.presentation.view.fragment.BeerFragment;
 import com.cervezoteca.anjov.presentation.view.fragment.BreweriesFragment;
 import com.cervezoteca.anjov.presentation.view.fragment.TapBeerFragment;
 
@@ -101,6 +102,17 @@ public class TapBeerActivity extends AppCompatActivity implements HasComponent<T
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 BreweriesFragment f = BreweriesFragment.newInstance();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, f).commit();
+                return false;
+            }
+        });
+
+        MenuItem navBottleBeers = navigationView.getMenu().findItem(R.id.nav_shop);
+        navBottleBeers.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                BeerFragment f = BeerFragment.newInstance();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, f).commit();
                 return false;

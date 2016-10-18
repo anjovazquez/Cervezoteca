@@ -1,5 +1,6 @@
 package com.cervezoteca.anjov.data.repository.datasource;
 
+import com.cervezoteca.anjov.domain.model.BottleBeer;
 import com.cervezoteca.anjov.domain.model.Brewery;
 import com.cervezoteca.anjov.domain.model.TapBeer;
 
@@ -16,4 +17,6 @@ public interface BreweryDataStore {
     Observable<List<Brewery>> getBreweries();
 
     Observable<List<TapBeer>> getTapBeers();
+
+    Observable<List<BottleBeer>> getBottleBeers();
 }

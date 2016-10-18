@@ -11,8 +11,8 @@ public class Beer {
     private String logo;
     private String brewery_name;
     private String brewery_country;
-    private String  abv;
-    private String  short_price;
+    private String abv;
+    private String short_price;
     private String glass_price;
     private String pint_price;
     private String style_name;

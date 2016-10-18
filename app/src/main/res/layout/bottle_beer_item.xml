@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="2dp">
+
+    <!--<TextView
+        android:id="@+id/beerId"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textStyle="bold|normal"
+
+        android:textColor="#ffffff"/>-->
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:id="@+id/beerLogo"
+        android:layout_marginLeft="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="2dp"
+        android:paddingLeft="6dp">
+
+
+        <TextView
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/beerName"
+            android:textStyle="bold|normal"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/styleName"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/brewery"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/glassPrice"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pintPrice"
+                android:layout_marginLeft="5dp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

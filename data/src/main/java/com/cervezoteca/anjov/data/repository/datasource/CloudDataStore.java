@@ -1,5 +1,6 @@
 package com.cervezoteca.anjov.data.repository.datasource;
 
+import com.cervezoteca.anjov.domain.model.BottleBeer;
 import com.cervezoteca.anjov.domain.model.Brewery;
 import com.cervezoteca.anjov.domain.model.TapBeer;
 
@@ -49,6 +50,9 @@ public class CloudDataStore implements BreweryDataStore {
         @GET("/api/tap/")
         Call<List<TapBeer>> getTapBeer();
 
+        @GET("/api/beers/?page_size=100")
+        Call<BottleBeerResponse> getBottleBeer();
+
     }
 
     public Observable<List<Brewery>> getBreweries() {
@@ -87,6 +91,29 @@ public class CloudDataStore implements BreweryDataStore {
                     }
                     else
                         subscriber.onError(new Exception(getTapBeersResponse.errorBody().string()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    subscriber.onError(new Exception(e.getMessage()));
+                }
+            }
+        });
+    }
+
+    public Observable<List<BottleBeer>> getBottleBeers() {
+
+        return Observable.create(new Observable.OnSubscribe<List<BottleBeer>>() {
+            @Override
+            public void call(Subscriber<? super List<BottleBeer>> subscriber) {
+                try {
+                    Call<BottleBeerResponse> getBottleBeers = breweryApiService.getBottleBeer();
+                    Response<BottleBeerResponse> getBottleBeersResponse = getBottleBeers.execute();
+                    if(getBottleBeersResponse.code()==200) {
+                        BottleBeerResponse response = getBottleBeersResponse.body();
+                        subscriber.onNext(response.getResults());
+                        subscriber.onCompleted();
+                    }
+                    else
+                        subscriber.onError(new Exception(getBottleBeersResponse.errorBody().string()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     subscriber.onError(new Exception(e.getMessage()));
