@@ -1,3 +1,3 @@
 # Cervezoteca
 
-![Alt text](/Cervezoteca/tree/master/art/images/tap_beers.png?raw=true "Tap beers")
+![Alt text](/tree/master/art/images/tap_beers.png?raw=true "Tap beers")
