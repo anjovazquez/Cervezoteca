@@ -27,14 +27,21 @@ public class BottleBeerListAdapter extends RecyclerView.Adapter<BottleBeerListAd
 
     private Collection<BottleBeer> mDataset;
     private Context context;
+    private OnBottleBeerSelectedListener listener = null;
 
-    public BottleBeerListAdapter(Context context, Collection<BottleBeer> beerCollection) {
+    public BottleBeerListAdapter(Context context, Collection<BottleBeer> beerCollection, OnBottleBeerSelectedListener listener) {
+
         this.mDataset = (List<BottleBeer>) beerCollection;
         this.context = context;
+        this.listener = listener;
     }
 
     public void setBeerListCollection(Collection<BottleBeer> beerList) {
         mDataset = beerList;
+    }
+
+    public interface OnBottleBeerSelectedListener {
+        void onItemClick(BottleBeer item);
     }
 
     static class BeerViewHolder extends RecyclerView.ViewHolder {
@@ -46,7 +53,6 @@ public class BottleBeerListAdapter extends RecyclerView.Adapter<BottleBeerListAd
 
         @BindView(R.id.beerLogo)
         ImageView beerLogo;
-
 
 
         public BeerViewHolder(View itemView) {
@@ -66,14 +72,20 @@ public class BottleBeerListAdapter extends RecyclerView.Adapter<BottleBeerListAd
 
     @Override
     public void onBindViewHolder(BottleBeerListAdapter.BeerViewHolder holder, int position) {
-        final BottleBeer bottleBeer = ((List<BottleBeer>)this.mDataset).get(position);
+        final BottleBeer bottleBeer = ((List<BottleBeer>) this.mDataset).get(position);
         //holder.beerId.setText(bottleBeer.getId());
         holder.beerName.setText(bottleBeer.getName());
         Picasso.with(context).load(bottleBeer.getLogo()).into(holder.beerLogo);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(bottleBeer);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return mDataset!=null?mDataset.size():0;
+        return mDataset != null ? mDataset.size() : 0;
     }
 }

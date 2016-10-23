@@ -66,7 +66,7 @@ public class TapBeerActivity extends AppCompatActivity implements HasComponent<T
         this.initializeInjector();
         tapBeersComponent.inject(this);
 
-        TapBeerFragment f = TapBeerFragment.newInstance();
+        BeerFragment f = BeerFragment.newInstance();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, f).commit();
 

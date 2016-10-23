@@ -1,6 +1,7 @@
 package com.cervezoteca.anjov.presentation.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.cervezoteca.anjov.presentation.di.HasComponent;
 import com.cervezoteca.anjov.presentation.di.component.TapBeersComponent;
 import com.cervezoteca.anjov.presentation.presenter.BottleBeerPresenter;
 import com.cervezoteca.anjov.presentation.view.BottleBeersView;
+import com.cervezoteca.anjov.presentation.view.activity.BottleDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BeerFragment extends Fragment implements BottleBeersView {
+public class BeerFragment extends Fragment implements BottleBeersView, BottleBeerListAdapter.OnBottleBeerSelectedListener {
 
     @Inject
     BottleBeerPresenter bottleBeerPresenter;
@@ -70,7 +72,7 @@ public class BeerFragment extends Fragment implements BottleBeersView {
 
         rBeerList.setHasFixedSize(true);
         rBeerList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bottleBeerListAdapter = new BottleBeerListAdapter(getActivity(), new ArrayList<BottleBeer>());
+        bottleBeerListAdapter = new BottleBeerListAdapter(getActivity(), new ArrayList<BottleBeer>(),this);
         rBeerList.setAdapter(bottleBeerListAdapter);
 
 
@@ -128,5 +130,15 @@ public class BeerFragment extends Fragment implements BottleBeersView {
             this.bottleBeerListAdapter.setBeerListCollection(beerList);
             rBeerList.setAdapter(bottleBeerListAdapter);
         }
+    }
+
+    @Override
+    public void onItemClick(BottleBeer item) {
+        Intent intentDetail = new Intent(getActivity(), BottleDetailActivity.class);
+        //intentDetail.putExtra(BottleDetailActivity.EXTRA_PRODUCT_ID, product.getProductId());
+        Bundle data = new Bundle();
+        data.putSerializable("beer", item);
+        intentDetail.putExtras(data);
+        startActivity(intentDetail);
     }
 }

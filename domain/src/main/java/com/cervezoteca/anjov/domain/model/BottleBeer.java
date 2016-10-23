@@ -1,10 +1,12 @@
 package com.cervezoteca.anjov.domain.model;
 
+import java.io.Serializable;
+
 /**
  * Created by anjov on 07/10/2016.
  */
 
-public class BottleBeer {
+public class BottleBeer implements Serializable {
 
     private String id;
     private String name;

@@ -18,6 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.cervezoteca.anjov.presentation.view.activity.BottleDetailActivity"
+            android:parentActivityName="com.cervezoteca.anjov.presentation.TapBeerActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cervezoteca.anjov.presentation.TapBeerActivity" />
+        </activity>
     </application>
 
 </manifest>
