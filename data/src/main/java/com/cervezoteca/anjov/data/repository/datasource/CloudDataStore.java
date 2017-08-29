@@ -1,12 +1,21 @@
 package com.cervezoteca.anjov.data.repository.datasource;
 
+import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.cervezoteca.anjov.domain.model.BottleBeer;
 import com.cervezoteca.anjov.domain.model.Brewery;
 import com.cervezoteca.anjov.domain.model.TapBeer;
 
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -24,17 +33,30 @@ public class CloudDataStore implements BreweryDataStore {
 
     private Retrofit retrofit;
     private BreweryApiService breweryApiService;
+    private Context context;
 
-    public CloudDataStore() {
+    public CloudDataStore(final Context context) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                .cache(new Cache(context.getCacheDir(), 10 * 1024 * 1024));
         httpClient.addInterceptor(logging);
+        httpClient.addInterceptor(new Interceptor() {
+            @Override public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                if (CloudDataStore.isNetworkAvailable(context)) {
+                    request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                } else {
+                    request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+                }
+                return chain.proceed(request);
+            }
+        });
 
         retrofit = new Retrofit.Builder().
-                baseUrl("http://dev.cervezotecamalte.com/")
+                baseUrl("https://cervezoteca-b09b0.firebaseio.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient.build())
                 .build();
@@ -42,15 +64,23 @@ public class CloudDataStore implements BreweryDataStore {
         breweryApiService = retrofit.create(BreweryApiService.class);
     }
 
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+    }
+
     public interface BreweryApiService {
 
         @GET("/api/breweries/")
         Call<List<Brewery>> getBreweries();
 
-        @GET("/api/tap/")
+        @GET("/beers.json")
         Call<List<TapBeer>> getTapBeer();
 
-        @GET("/api/beers/?page_size=100")
+        @GET("/beers.json")
         Call<BottleBeerResponse> getBottleBeer();
 
     }

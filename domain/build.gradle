@@ -1,12 +1,15 @@
 apply plugin: 'java'
 
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
 configurations {
     provided
 }
 
 sourceSets {
     main {
-        compileClasspath += configurations.provided
+      compileClasspath += configurations.provided
     }
 }
 
@@ -20,8 +23,5 @@ dependencies {
     compile 'com.google.dagger:dagger:2.5'
     provided 'javax.annotation:jsr250-api:1.0'
 }
-
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"
 
 

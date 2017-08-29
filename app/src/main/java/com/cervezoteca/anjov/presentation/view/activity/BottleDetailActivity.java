@@ -8,6 +8,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cervezoteca.anjov.domain.model.BottleBeer;
 import com.cervezoteca.anjov.presentation.R;
@@ -24,11 +25,18 @@ public class BottleDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbar;
+
     @BindView(R.id.backdrop)
     ImageView imageView;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.tvBeerName)
+    TextView tvBeerName;
+
+    @BindView(R.id.tvBeerStyle)
+    TextView tvBeerStyle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +51,9 @@ public class BottleDetailActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        tvBeerName.setText(beer.getName());
+        tvBeerStyle.setText(beer.getStyle_name());
 
         Picasso.with(this).load(beer.getLogo()).into(imageView);
     }

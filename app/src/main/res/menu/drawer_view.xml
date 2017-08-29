@@ -5,12 +5,12 @@
         <item
             android:id="@+id/nav_beers"
             android:title="@string/beers" />
-        <item
+        <!--<item
             android:id="@+id/nav_breweries"
             android:title="@string/breweries" />
         <item
             android:id="@+id/nav_shop"
-            android:title="@string/shop" />
+            android:title="@string/shop" />-->
     </group>
 
 </menu>

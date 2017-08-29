@@ -66,7 +66,7 @@ public class TapBeerActivity extends AppCompatActivity implements HasComponent<T
         this.initializeInjector();
         tapBeersComponent.inject(this);
 
-        BeerFragment f = BeerFragment.newInstance();
+        TapBeerFragment f = TapBeerFragment.newInstance();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, f).commit();
 
@@ -97,7 +97,7 @@ public class TapBeerActivity extends AppCompatActivity implements HasComponent<T
 
         });
 
-        MenuItem navBreweries = navigationView.getMenu().findItem(R.id.nav_breweries);
+        /*MenuItem navBreweries = navigationView.getMenu().findItem(R.id.nav_breweries);
         navBreweries.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -117,7 +117,7 @@ public class TapBeerActivity extends AppCompatActivity implements HasComponent<T
                         .replace(R.id.fragment_container, f).commit();
                 return false;
             }
-        });
+        });*/
 
     }
 

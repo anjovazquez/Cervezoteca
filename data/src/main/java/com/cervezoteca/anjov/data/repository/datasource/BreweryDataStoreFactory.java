@@ -19,6 +19,6 @@ public class BreweryDataStoreFactory {
     }
 
     public CloudDataStore createCloudDataStore() {
-        return new CloudDataStore();
+        return new CloudDataStore(context);
     }
 }
